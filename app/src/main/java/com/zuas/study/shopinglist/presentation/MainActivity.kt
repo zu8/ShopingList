@@ -1,7 +1,8 @@
-package com.zuas.study.shopinglist
+package com.zuas.study.shopinglist.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.zuas.study.shopinglist.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
