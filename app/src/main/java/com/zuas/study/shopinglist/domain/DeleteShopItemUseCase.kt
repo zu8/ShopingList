@@ -4,7 +4,7 @@ class DeleteShopItemUseCase(
     private val repository: ShopListRepository
 ) {
 
-    fun deleteShopItem(item: ShopItem) {
+    suspend operator fun invoke(item: ShopItem) {
         repository.deleteShopItem(item)
     }
 }

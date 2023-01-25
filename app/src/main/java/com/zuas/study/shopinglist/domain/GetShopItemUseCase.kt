@@ -4,7 +4,7 @@ class GetShopItemUseCase(
     private val repository: ShopListRepository
 ) {
 
-    fun getShopItem(id: Int): ShopItem {
+     operator fun invoke(id: Int): ShopItem {
         return repository.getShopItem(id)
     }
 }
