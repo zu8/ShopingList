@@ -4,7 +4,7 @@ class GetShopListUseCase(
     private val repository: ShopListRepository
 ) {
 
-    fun getShopList(): List<ShopItem> {
+    operator fun invoke(): List<ShopItem> {
         return repository.getShopList()
     }
 }

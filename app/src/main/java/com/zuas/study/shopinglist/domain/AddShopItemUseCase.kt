@@ -4,7 +4,7 @@ class AddShopItemUseCase(
     private val repository: ShopListRepository
 ) {
 
-    fun addShopItem(item: ShopItem) {
+    suspend operator fun invoke(item: ShopItem) {
         repository.addShopItem(item)
     }
 }
