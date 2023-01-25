@@ -8,10 +8,10 @@ import com.zuas.study.shopinglist.domain.ShopItem
 interface ShoppingListDao {
 
     @Query("SELECT * FROM shop_list")
-    fun getShopList(): List<ShopItem>
+    fun getShopList(): LiveData<List<ShopItem>>
 
     @Query("SELECT * FROM shop_list WHERE id == :itemId LIMIT 1")
-    fun getShopItem(itemId: Int): ShopItem
+    fun getShopItem(itemId: Int): ShopItem?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShopItem(item: ShopItem)

@@ -7,9 +7,9 @@ import androidx.room.RoomDatabase
 import com.zuas.study.shopinglist.domain.ShopItem
 
 @Database(entities = [ShopItem::class], version = 1, exportSchema = false)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
-    companion object{
+    companion object {
         private var db: AppDatabase? = null
         private const val DB_NAME = "main.db"
         private val LOCK = Any()
