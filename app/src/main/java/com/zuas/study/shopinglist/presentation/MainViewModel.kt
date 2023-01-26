@@ -30,6 +30,7 @@ class MainViewModel(
     val item: LiveData<ShopItem>
         get() = _item
 
+
     fun addShopItem(item: ShopItem) {
         viewModelScope.launch(Dispatchers.IO) {
             addShopItemUseCase(item)
