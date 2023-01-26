@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.zuas.study.shopinglist.R
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        setupRecyclerView()
+        val buttonAddItem: FloatingActionButton = findViewById(R.id.button_add_shop_item)
+        setupRecyclerView(buttonAddItem)
+        buttonAddItem.setOnClickListener{
+            val intent = ShopItemActivity.newIntentAddItem(this)
+            startActivity(intent)
+        }
 
         viewModel.shopList.observe(this) {
             Log.d("MainActivity", it.toString())
@@ -36,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView(button: FloatingActionButton) {
         val rvShopList = findViewById<RecyclerView>(R.id.rv_shop_list)
         adapterShopList = ShopListAdapter()
         with(rvShopList) {
@@ -52,6 +58,8 @@ class MainActivity : AppCompatActivity() {
         }
         setupOnItemClickListeners()
         setupSwipeListener(rvShopList)
+        rvShopList.setOnScrollChangeListener{ _, _, _, _, oldScrollY ->
+            if (oldScrollY < 0) button.hide() else button.show()}
     }
 
     private fun setupSwipeListener(rvShopList: RecyclerView) {
@@ -79,7 +87,13 @@ class MainActivity : AppCompatActivity() {
     private fun setupOnItemClickListeners() {
         with(adapterShopList) {
             onShopItemLongClickListener = { viewModel.changeEnableState(it) }
-            onShopItemClickListener = { Log.d(TAG, it.toString()) }
+            onShopItemClickListener = {
+                val intent = ShopItemActivity.newIntentEditItem(
+                    this@MainActivity,it.id)
+                startActivity(intent)
+            }
         }
     }
+
+
 }

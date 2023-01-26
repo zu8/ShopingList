@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Shoping List</string>
     <string name="add_new_shop_item">Add new shop item</string>
+    <string name="name_hint">Name:</string>
+    <string name="count_hint">Count:</string>
+    <string name="btn_save_label">Save</string>
+    <string name="name_error">"Empty field!Please type name here"</string>
+    <string name="count_error">"The number is missing or too large"</string>
+
 </resources>
