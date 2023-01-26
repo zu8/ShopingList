@@ -1,14 +1,14 @@
 package com.zuas.study.shopinglist.data
 
+import androidx.lifecycle.LiveData
 import com.zuas.study.shopinglist.data.database.ShoppingListDao
 import com.zuas.study.shopinglist.domain.ShopItem
 import com.zuas.study.shopinglist.domain.ShopListRepository
 
-
 class ShopListRepositoryImpl(
     private val shoppingListDao: ShoppingListDao
-): ShopListRepository {
-    override fun getShopList(): List<ShopItem> {
+) : ShopListRepository {
+    override fun getShopList(): LiveData<List<ShopItem>> {
         return shoppingListDao.getShopList()
     }
 
@@ -21,10 +21,10 @@ class ShopListRepositoryImpl(
     }
 
     override suspend fun editShopItem(item: ShopItem) {
-       shoppingListDao.insertShopItem(item)
+        shoppingListDao.insertShopItem(item)
     }
 
-    override fun getShopItem(id: Int): ShopItem {
+    override fun getShopItem(id: Int): ShopItem? {
         return shoppingListDao.getShopItem(id)
     }
 }
