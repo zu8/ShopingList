@@ -12,6 +12,6 @@ interface ShopListRepository {
 
     suspend fun editShopItem(item: ShopItem)
 
-    fun getShopItem(id: Int): ShopItem?
+    suspend fun getShopItem(id: Int): ShopItem?
 
 }

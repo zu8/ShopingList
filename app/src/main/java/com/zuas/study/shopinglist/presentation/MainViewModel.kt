@@ -28,13 +28,13 @@ class MainViewModel(
         get() = _item
 
     fun deleteShopItem(item: ShopItem) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             deleteShopItemUseCase(item)
         }
     }
 
     fun changeEnableState(item: ShopItem) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val newItem = item.copy(enabled = !item.enabled)
             editShopItemUseCase(newItem)
         }

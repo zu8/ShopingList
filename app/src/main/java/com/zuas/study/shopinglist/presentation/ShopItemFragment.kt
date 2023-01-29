@@ -82,7 +82,7 @@ class ShopItemFragment(
         btnSave.setOnClickListener {
             val name = etName.text.toString()
             val count = etCount.text.toString()
-            viewModel.editShopItem(shopItemId, name, count)
+            viewModel.editShopItem(name, count)
         }
 
     }

@@ -43,36 +43,36 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             if (fieldsValid) {
                 val shopItem = ShopItem(name, count, true)
                 addShopItemUseCase(shopItem)
-                finishWorkFromSideThread()
+                finishWork()
             }
         }
     }
 
 
     fun getShopItem(itemId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val tempItem = getShopItemUseCase(itemId)
             tempItem?.let {
-                _item.postValue(it)
+                _item.value = it
             }
         }
     }
 
-    fun editShopItem(itemId: Int, inputName: String?, inputCount: String?) {
+    fun editShopItem( inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
         if (fieldsValid) {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 _item.value?.let {
                     val newItem = it.copy(name = name, count = count)
                     editShopItemUseCase(newItem)
-                    _item.postValue(newItem)
-                    finishWorkFromSideThread()
+                    _item.value = newItem
+                    finishWork()
                 }
             }
         }
@@ -112,8 +112,8 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
         _errorInputCount.value = false
     }
 
-    private fun finishWorkFromSideThread() {
-        _shouldCloseScreen.postValue(Unit)
+    private fun finishWork() {
+        _shouldCloseScreen.value = Unit
     }
 
 }

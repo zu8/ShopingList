@@ -11,7 +11,7 @@ interface ShoppingListDao {
     fun getShopList(): LiveData<List<ShopItem>>
 
     @Query("SELECT * FROM shop_list WHERE id == :itemId LIMIT 1")
-    fun getShopItem(itemId: Int): ShopItem?
+    suspend fun getShopItem(itemId: Int): ShopItem?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShopItem(item: ShopItem)

@@ -24,7 +24,7 @@ class ShopListRepositoryImpl(
         shoppingListDao.insertShopItem(item)
     }
 
-    override fun getShopItem(id: Int): ShopItem? {
+    override suspend fun getShopItem(id: Int): ShopItem? {
         return shoppingListDao.getShopItem(id)
     }
 }
