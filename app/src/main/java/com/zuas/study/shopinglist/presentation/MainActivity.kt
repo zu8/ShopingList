@@ -11,19 +11,25 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.zuas.study.shopinglist.R
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
+    }
+
     private lateinit var adapterShopList: ShopListAdapter
     private var shopItemContainer: FragmentContainerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as ShoppingApp).component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         shopItemContainer = findViewById(R.id.shop_item_container)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val buttonAddItem: FloatingActionButton = findViewById(R.id.button_add_shop_item)
         setupRecyclerView(buttonAddItem)
         buttonAddItem.setOnClickListener{

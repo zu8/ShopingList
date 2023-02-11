@@ -1,26 +1,19 @@
 package com.zuas.study.shopinglist.presentation
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.zuas.study.shopinglist.data.ShopListRepositoryImpl
 import com.zuas.study.shopinglist.data.database.AppDatabase
 import com.zuas.study.shopinglist.domain.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-
-    private val dao = AppDatabase.getInstance(application).shoppingListDao()
-    private val repository = ShopListRepositoryImpl(dao)
-
-    private val getShopListUseCase = GetShopListUseCase(repository)
-    private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
+class MainViewModel @Inject constructor(
+    private val getShopListUseCase: GetShopListUseCase,
+    private val deleteShopItemUseCase: DeleteShopItemUseCase,
+    private val editShopItemUseCase: EditShopItemUseCase
+) : ViewModel() {
 
     val shopList = getShopListUseCase()
     private val _item = MutableLiveData<ShopItem>()

@@ -1,6 +1,8 @@
 package com.zuas.study.shopinglist.domain
 
-class EditShopItemUseCase(
+import javax.inject.Inject
+
+class EditShopItemUseCase @Inject constructor(
     private val repository: ShopListRepository
 ) {
 
