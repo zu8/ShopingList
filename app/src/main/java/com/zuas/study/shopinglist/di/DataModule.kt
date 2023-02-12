@@ -10,6 +10,7 @@ import dagger.Module
 @Module
 interface DataModule {
 
+    @ApplicationScope
     @Binds
     fun bindRepository(impl: ShopListRepositoryImpl):ShopListRepository
 
