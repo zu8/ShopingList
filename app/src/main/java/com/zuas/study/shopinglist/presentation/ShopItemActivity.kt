@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.zuas.study.shopinglist.R
 import com.zuas.study.shopinglist.domain.ShopItem
+import javax.inject.Inject
 
 class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 

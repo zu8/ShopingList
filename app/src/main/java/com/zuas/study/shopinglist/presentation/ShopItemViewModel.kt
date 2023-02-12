@@ -1,10 +1,7 @@
 package com.zuas.study.shopinglist.presentation
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.zuas.study.shopinglist.data.ShopListRepositoryImpl
 import com.zuas.study.shopinglist.data.database.AppDatabase
 import com.zuas.study.shopinglist.domain.AddShopItemUseCase
@@ -13,14 +10,13 @@ import com.zuas.study.shopinglist.domain.GetShopItemUseCase
 import com.zuas.study.shopinglist.domain.ShopItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
-    private val dao = AppDatabase.getInstance(application).shoppingListDao()
-    private val repository = ShopListRepositoryImpl(dao)
-
-    private val addShopItemUseCase = AddShopItemUseCase(repository)
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
-    private val getShopItemUseCase = GetShopItemUseCase(repository)
+class ShopItemViewModel @Inject constructor(
+    private val addShopItemUseCase : AddShopItemUseCase,
+    private val editShopItemUseCase : EditShopItemUseCase,
+    private val getShopItemUseCase : GetShopItemUseCase,
+) : ViewModel() {
 
     private val _item = MutableLiveData<ShopItem>()
     val item: LiveData<ShopItem>
@@ -43,36 +39,36 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             if (fieldsValid) {
                 val shopItem = ShopItem(name, count, true)
                 addShopItemUseCase(shopItem)
-                finishWorkFromSideThread()
+                finishWork()
             }
         }
     }
 
 
     fun getShopItem(itemId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val tempItem = getShopItemUseCase(itemId)
             tempItem?.let {
-                _item.postValue(it)
+                _item.value = it
             }
         }
     }
 
-    fun editShopItem(itemId: Int, inputName: String?, inputCount: String?) {
+    fun editShopItem( inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
         if (fieldsValid) {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 _item.value?.let {
                     val newItem = it.copy(name = name, count = count)
                     editShopItemUseCase(newItem)
-                    _item.postValue(newItem)
-                    finishWorkFromSideThread()
+                    _item.value = newItem
+                    finishWork()
                 }
             }
         }
@@ -112,8 +108,8 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
         _errorInputCount.value = false
     }
 
-    private fun finishWorkFromSideThread() {
-        _shouldCloseScreen.postValue(Unit)
+    private fun finishWork() {
+        _shouldCloseScreen.value = Unit
     }
 
 }

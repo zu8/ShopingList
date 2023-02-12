@@ -1,10 +1,12 @@
 package com.zuas.study.shopinglist.domain
 
-class GetShopItemUseCase(
+import javax.inject.Inject
+
+class GetShopItemUseCase @Inject constructor(
     private val repository: ShopListRepository
 ) {
 
-     operator fun invoke(id: Int): ShopItem? {
+     suspend operator fun invoke(id: Int): ShopItem? {
 
         return repository.getShopItem(id)
     }

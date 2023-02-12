@@ -15,11 +15,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.zuas.study.shopinglist.R
 import com.zuas.study.shopinglist.domain.ShopItem
+import javax.inject.Inject
 
 
 class ShopItemFragment(
 
 ) : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel by lazy {
+        ViewModelProvider(this,viewModelFactory)[ShopItemViewModel::class.java]
+    }
 
     private lateinit var tilName: TextInputLayout
     private lateinit var tilCount: TextInputLayout
@@ -27,13 +35,14 @@ class ShopItemFragment(
     private lateinit var etCount: EditText
     private lateinit var btnSave: Button
 
-    private lateinit var viewModel: ShopItemViewModel
+
     private var screenMode = UNDEFINED_SCREEN_MODE
     private var shopItemId = ShopItem.UNDEFINED_ID
 
     private lateinit var onEditingFinishedListener: OnEditingFinishedListener
 
     override fun onAttach(context: Context) {
+        (requireActivity().application as ShoppingApp).component.inject(this)
         super.onAttach(context)
         if (context is OnEditingFinishedListener) {
             onEditingFinishedListener = context
@@ -59,7 +68,6 @@ class ShopItemFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         initViews(view)
         when (screenMode) {
             MODE_EDIT -> launchEditMode()
@@ -82,7 +90,7 @@ class ShopItemFragment(
         btnSave.setOnClickListener {
             val name = etName.text.toString()
             val count = etCount.text.toString()
-            viewModel.editShopItem(shopItemId, name, count)
+            viewModel.editShopItem(name, count)
         }
 
     }

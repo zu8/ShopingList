@@ -1,8 +1,9 @@
 package com.zuas.study.shopinglist.domain
 
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 
-class GetShopListUseCase(
+class GetShopListUseCase @Inject constructor(
     private val repository: ShopListRepository
 ) {
 
